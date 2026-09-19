@@ -199,8 +199,8 @@ export const App: React.FC = () => {
       <DraggableCard
         id="timer"
         title="Odak Sayacı"
-        icon={<Clock className="w-3.5 h-3.5" />}
-        defaultPosition={() => ({ x: 24, y: 76 })}
+        icon={<Clock className="w-3 h-3" />}
+        defaultPosition={() => ({ x: 20, y: 64 })}
         zIndex={zIndices.timer}
         onFocus={() => bringToFront('timer')}
         isZenMode={isZenMode}
@@ -213,10 +213,10 @@ export const App: React.FC = () => {
         <DraggableCard
           id="reading"
           title="Şu An Okuyorum & Alıntılar"
-          icon={<BookOpen className="w-3.5 h-3.5" />}
+          icon={<BookOpen className="w-3 h-3" />}
           defaultPosition={() => ({
-            x: Math.max(24, Math.floor((window.innerWidth - 440) / 2)),
-            y: 80,
+            x: Math.max(20, Math.floor((window.innerWidth - 360) / 2)),
+            y: 64,
           })}
           zIndex={zIndices.reading}
           onFocus={() => bringToFront('reading')}
@@ -230,10 +230,10 @@ export const App: React.FC = () => {
         <DraggableCard
           id="spotify"
           title="Spotify Müzik"
-          icon={<Music className="w-3.5 h-3.5" />}
+          icon={<Music className="w-3 h-3" />}
           defaultPosition={() => ({
-            x: 24,
-            y: Math.max(80, window.innerHeight - 240),
+            x: 20,
+            y: Math.max(64, window.innerHeight - 230),
           })}
           zIndex={zIndices.spotify}
           onFocus={() => bringToFront('spotify')}
@@ -247,10 +247,10 @@ export const App: React.FC = () => {
         <DraggableCard
           id="ambient"
           title="Ortam Sesleri"
-          icon={<Sparkles className="w-3.5 h-3.5" />}
+          icon={<Sparkles className="w-3 h-3" />}
           defaultPosition={() => ({
-            x: Math.max(24, window.innerWidth - 340),
-            y: Math.max(80, window.innerHeight - 240),
+            x: Math.max(20, window.innerWidth - 275),
+            y: Math.max(64, window.innerHeight - 230),
           })}
           zIndex={zIndices.ambient}
           onFocus={() => bringToFront('ambient')}

@@ -92,9 +92,19 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
     // Only drag with primary mouse button
     if (e.button !== 0) return;
 
+    // Ignore clicks on buttons, inputs, sliders, or elements explicitly marked with data-no-drag
+    const target = e.target as HTMLElement;
+    if (target.closest('button, input, textarea, a, select, [data-no-drag="true"]')) {
+      return;
+    }
+
     onFocus();
     const handleElement = e.currentTarget;
-    handleElement.setPointerCapture(e.pointerId);
+    try {
+      handleElement.setPointerCapture(e.pointerId);
+    } catch {
+      // Ignore
+    }
 
     setIsDragging(true);
     dragStartRef.current = {
@@ -154,37 +164,49 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
     <div
       ref={cardRef}
       onPointerDownCapture={onFocus}
+      onPointerDown={isZenMode ? handlePointerDown : undefined}
+      onPointerMove={isZenMode ? handlePointerMove : undefined}
+      onPointerUp={isZenMode ? handlePointerUp : undefined}
+      onPointerCancel={isZenMode ? handlePointerUp : undefined}
       style={{
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
         zIndex: isDragging ? 99 : zIndex,
       }}
       className={`fixed top-0 left-0 transition-shadow duration-200 ${
         isDragging ? 'shadow-[0_20px_50px_rgba(0,0,0,0.6)] scale-[1.01]' : ''
-      } ${className}`}
+      } ${isZenMode ? 'cursor-grab active:cursor-grabbing' : ''} ${className}`}
     >
-      {/* Draggable Header Handle Bar (Only this bar initiates dragging) */}
-      {!isZenMode && (
+      {/* Draggable Header Handle Bar */}
+      {!isZenMode ? (
         <div
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          className="w-full flex items-center justify-between px-3.5 py-1.5 bg-black/40 hover:bg-black/60 active:bg-black/70 backdrop-blur-md rounded-t-2xl border border-b-0 border-white/10 cursor-grab active:cursor-grabbing select-none text-zinc-400 hover:text-white transition-colors"
+          className="w-full flex items-center justify-between px-3 py-1 bg-black/40 hover:bg-black/60 active:bg-black/70 backdrop-blur-md rounded-t-xl sm:rounded-t-2xl border border-b-0 border-white/10 cursor-grab active:cursor-grabbing select-none text-zinc-400 hover:text-white transition-colors"
           title="Kartı taşımak için bu başlıktan tutarak sürükleyin"
         >
-          <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide">
-            <GripHorizontal className="w-4 h-4 text-amber-400/80" />
+          <div className="flex items-center gap-1.5 text-[11px] font-medium tracking-wide">
+            <GripHorizontal className="w-3.5 h-3.5 text-amber-400/80" />
             {icon && <span className="text-amber-300">{icon}</span>}
-            <span className="text-[11px] text-zinc-300">{title}</span>
+            <span className="text-[10px] text-zinc-300">{title}</span>
           </div>
-          <span className="text-[10px] text-zinc-500 font-mono tracking-wider uppercase pointer-events-none">
+          <span className="text-[9px] text-zinc-500 font-mono tracking-wider uppercase pointer-events-none">
             Taşı
           </span>
+        </div>
+      ) : (
+        /* Zen Mode Minimalist Grip Handle */
+        <div
+          className="w-full flex items-center justify-center pt-2 pb-0.5 cursor-grab active:cursor-grabbing group/drag select-none"
+          title="Sayacı taşımak için sürükleyin"
+        >
+          <div className="w-10 h-1 rounded-full bg-white/20 group-hover/drag:bg-amber-400/80 group-active/drag:bg-amber-400 transition-colors" />
         </div>
       )}
 
       {/* Card Body */}
-      <div className={!isZenMode ? 'rounded-b-2xl overflow-hidden' : ''}>
+      <div className={!isZenMode ? 'rounded-b-xl sm:rounded-b-2xl overflow-hidden' : 'rounded-b-2xl overflow-hidden'}>
         {children}
       </div>
     </div>

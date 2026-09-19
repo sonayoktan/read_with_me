@@ -21,16 +21,16 @@ export const TopNav: React.FC<TopNavProps> = ({
 }) => {
   if (isZenMode) {
     return (
-      <div className="fixed top-6 left-6 z-50">
+      <div className="fixed top-3 left-4 z-50">
         <button
           onClick={() => {
             audioManager.playSoftClick();
             onToggleZenMode();
           }}
-          className="glass-panel px-4 py-2 rounded-2xl flex items-center gap-2 text-xs text-amber-200 hover:text-white border border-white/10 hover:border-white/25 transition-all shadow-lg hover:scale-105"
+          className="glass-panel px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-[11px] text-amber-200 hover:text-white border border-white/10 hover:border-white/25 transition-all shadow-lg hover:scale-105"
           title="Odak modundan çık (Z)"
         >
-          <Eye className="w-3.5 h-3.5" />
+          <Eye className="w-3 h-3" />
           <span>Odak Modundan Çık</span>
         </button>
       </div>
@@ -38,31 +38,31 @@ export const TopNav: React.FC<TopNavProps> = ({
   }
 
   return (
-    <header className="fixed top-6 inset-x-0 mx-auto max-w-2xl z-30 px-4 pointer-events-none">
-      <div className="glass-panel rounded-full px-5 py-2.5 flex items-center justify-between border border-white/10 shadow-2xl pointer-events-auto">
+    <header className="fixed top-3 sm:top-4 inset-x-0 mx-auto max-w-xl z-30 px-3 pointer-events-none">
+      <div className="glass-panel rounded-full px-4 py-2 flex items-center justify-between border border-white/10 shadow-2xl pointer-events-auto">
         {/* Brand */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-stone-900 font-bold text-xs shadow-md">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-stone-900 font-bold text-[11px] shadow-sm">
             ☕
           </div>
           <div className="flex items-baseline gap-1.5">
-            <span className="text-sm font-semibold tracking-wide text-white">Read With Me</span>
-            <span className="text-[10px] text-amber-400/80 font-mono hidden sm:inline">lo-fi space</span>
+            <span className="text-xs font-semibold tracking-wide text-white">Read With Me</span>
+            <span className="text-[9px] text-amber-400/80 font-mono hidden sm:inline">lo-fi space</span>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-1 sm:gap-1.5">
           {/* Background selector button */}
           <button
             onClick={() => {
               audioManager.playSoftClick();
               onOpenBgPicker();
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full glass-button text-xs text-zinc-300 hover:text-white"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass-button text-[11px] text-zinc-300 hover:text-white"
             title="Arka Planı Değiştir"
           >
-            <Image className="w-3.5 h-3.5 text-amber-400" />
+            <Image className="w-3 h-3 text-amber-400" />
             <span className="hidden sm:inline">Arka Plan</span>
           </button>
 
@@ -72,10 +72,10 @@ export const TopNav: React.FC<TopNavProps> = ({
               audioManager.playSoftClick();
               onToggleZenMode();
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full glass-button text-xs text-zinc-300 hover:text-white"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass-button text-[11px] text-zinc-300 hover:text-white"
             title="Sadece timer kalsın, diğer her şeyi gizle (Z)"
           >
-            <EyeOff className="w-3.5 h-3.5 text-indigo-400" />
+            <EyeOff className="w-3 h-3 text-indigo-400" />
             <span className="hidden sm:inline">Odak Modu</span>
           </button>
 
@@ -89,7 +89,7 @@ export const TopNav: React.FC<TopNavProps> = ({
               className="p-1.5 rounded-full glass-button text-zinc-300 hover:text-amber-300 transition-colors"
               title="Pencere Düzenini Sıfırla"
             >
-              <LayoutGrid className="w-3.5 h-3.5" />
+              <LayoutGrid className="w-3 h-3" />
             </button>
           )}
 
@@ -102,7 +102,7 @@ export const TopNav: React.FC<TopNavProps> = ({
             className="p-1.5 rounded-full glass-button text-zinc-300 hover:text-white"
             title={isFullscreen ? "Tam Ekrandan Çık (F)" : "Tam Ekran Yap (F)"}
           >
-            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+            {isFullscreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
           </button>
         </div>
       </div>

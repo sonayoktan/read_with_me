@@ -104,25 +104,25 @@ export const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ isZenMode }) => {
   if (isZenMode) return null;
 
   return (
-    <div className="glass-panel rounded-3xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 w-80 md:w-96">
+    <div className="glass-panel rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 w-72 md:w-80">
         {/* Header Bar */}
         <div
           onClick={() => {
             audioManager.playSoftClick();
             setIsOpen(!isOpen);
           }}
-          className="px-5 py-3.5 flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors"
+          className="px-4 py-2.5 flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors"
         >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-sm">
-              <Music className="w-4 h-4" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-sm">
+              <Music className="w-3.5 h-3.5" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-white flex items-center gap-1.5">
+              <div className="text-xs font-semibold text-white flex items-center gap-1.5">
                 Spotify Müzik
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               </div>
-              <div className="text-[11px] text-zinc-400 font-mono truncate max-w-[180px]">
+              <div className="text-[10px] text-zinc-400 font-mono truncate max-w-[150px]">
                 {selectedPreset === 'custom'
                   ? 'Özel Playlist'
                   : PRESET_PLAYLISTS.find(p => p.id === selectedPreset)?.title}
@@ -130,21 +130,21 @@ export const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ isZenMode }) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               className="p-1 rounded-full text-zinc-400 hover:text-white transition-colors"
               aria-label={isOpen ? "Oynatıcıyı Küçült" : "Oynatıcıyı Aç"}
             >
-              {isOpen ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+              {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
         {/* Collapsible Content */}
         {isOpen && (
-          <div className="p-4 pt-1 border-t border-white/5 space-y-3 animate-fade-in">
+          <div className="p-3 pt-1 border-t border-white/5 space-y-2.5 animate-fade-in">
             {/* Embedded Spotify Player iframe */}
-            <div className="rounded-2xl overflow-hidden shadow-inner bg-black/40 border border-white/5">
+            <div className="rounded-xl overflow-hidden shadow-inner bg-black/40 border border-white/5">
               <iframe
                 src={currentEmbedUrl}
                 width="100%"
@@ -153,13 +153,13 @@ export const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ isZenMode }) => {
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy"
                 title="Spotify Lo-Fi Player"
-                className="w-full rounded-2xl"
+                className="w-full rounded-xl"
               />
             </div>
 
             {/* Presets selector */}
             <div className="space-y-1.5">
-              <div className="flex items-center justify-between text-[11px] text-zinc-400 font-medium px-1">
+              <div className="flex items-center justify-between text-[10px] text-zinc-400 font-medium px-1">
                 <span className="flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-amber-400" />
                   Önerilen Lo-Fi Listeleri
@@ -168,25 +168,25 @@ export const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ isZenMode }) => {
                   onClick={() => setShowCustomInput(!showCustomInput)}
                   className="text-amber-400 hover:text-amber-300 flex items-center gap-1 underline transition-colors"
                 >
-                  <LinkIcon className="w-3 h-3" />
+                  <LinkIcon className="w-2.5 h-2.5" />
                   {showCustomInput ? 'İptal' : 'Kendi Listeni Ekle'}
                 </button>
               </div>
 
               {/* Custom URL Input Form */}
               {showCustomInput ? (
-                <form onSubmit={handleApplyCustomUrl} className="pt-1">
-                  <div className="flex gap-2">
+                <form onSubmit={handleApplyCustomUrl} className="pt-0.5">
+                  <div className="flex gap-1.5">
                     <input
                       type="text"
-                      placeholder="Spotify playlist veya albüm bağlantısı..."
+                      placeholder="Spotify playlist veya albüm linki..."
                       value={customInput}
                       onChange={(e) => setCustomInput(e.target.value)}
-                      className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/50 font-mono"
+                      className="flex-1 bg-black/40 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/50 font-mono"
                     />
                     <button
                       type="submit"
-                      className="px-3 py-1.5 bg-emerald-500/30 hover:bg-emerald-500/40 text-emerald-300 text-xs font-semibold rounded-xl border border-emerald-500/30 transition-colors flex items-center gap-1"
+                      className="px-2.5 py-1 bg-emerald-500/30 hover:bg-emerald-500/40 text-emerald-300 text-xs font-semibold rounded-lg border border-emerald-500/30 transition-colors flex items-center gap-1"
                     >
                       <Check className="w-3 h-3" />
                       Yükle
@@ -207,14 +207,14 @@ export const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ isZenMode }) => {
                         localStorage.setItem('rwm_spotify_embed', preset.embedUrl);
                         audioManager.playSoftClick();
                       }}
-                      className={`text-left p-2 rounded-xl transition-all border ${
+                      className={`text-left p-1.5 rounded-lg transition-all border ${
                         selectedPreset === preset.id
                           ? 'bg-emerald-500/15 border-emerald-500/40 text-white'
                           : 'bg-white/5 border-white/5 text-zinc-400 hover:bg-white/10 hover:text-zinc-200'
                       }`}
                     >
-                      <div className="text-xs font-medium truncate">{preset.title.split('-')[0]}</div>
-                      <div className="text-[10px] text-zinc-500 truncate">{preset.subtitle}</div>
+                      <div className="text-[11px] font-medium truncate">{preset.title.split('-')[0]}</div>
+                      <div className="text-[9px] text-zinc-500 truncate">{preset.subtitle}</div>
                     </button>
                   ))}
                 </div>

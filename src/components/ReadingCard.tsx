@@ -23,12 +23,12 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({ isZenMode }) => {
   if (isZenMode) return null;
 
   return (
-    <div className="max-w-md w-full glass-panel rounded-3xl p-5 md:p-6 border border-white/10 shadow-2xl space-y-4 animate-fade-in pointer-events-auto">
+    <div className="max-w-sm w-full glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-4.5 border border-white/10 shadow-2xl space-y-3 animate-fade-in pointer-events-auto">
       {/* Book Tracker */}
-      <div className="flex items-start justify-between border-b border-white/10 pb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300">
-            <BookOpen className="w-5 h-5" />
+      <div className="flex items-start justify-between border-b border-white/10 pb-2.5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300 shrink-0">
+            <BookOpen className="w-4 h-4" />
           </div>
           <div>
             {isEditing ? (
@@ -45,34 +45,34 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({ isZenMode }) => {
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                   placeholder="Yazar"
-                  className="bg-black/40 border border-white/20 rounded px-2 py-0.5 text-[11px] text-zinc-300 block"
+                  className="bg-black/40 border border-white/20 rounded px-2 py-0.5 text-[10px] text-zinc-300 block"
                 />
               </div>
             ) : (
               <>
-                <h3 className="text-sm font-semibold text-white tracking-wide">{bookTitle || 'Okuduğun Kitap'}</h3>
-                <p className="text-xs text-zinc-400 font-serif italic">{author || 'Yazar'}</p>
+                <h3 className="text-xs font-semibold text-white tracking-wide">{bookTitle || 'Okuduğun Kitap'}</h3>
+                <p className="text-[11px] text-zinc-400 font-serif italic">{author || 'Yazar'}</p>
               </>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {isEditing ? (
             <div className="flex items-center gap-1">
-              <span className="text-xs text-zinc-400">Sayfa:</span>
+              <span className="text-[10px] text-zinc-400">Sayfa:</span>
               <input
                 type="text"
                 value={currentPage}
                 onChange={(e) => setCurrentPage(e.target.value)}
-                className="w-12 bg-black/40 border border-white/20 rounded px-1.5 py-0.5 text-xs text-center text-amber-300 font-mono"
+                className="w-10 bg-black/40 border border-white/20 rounded px-1 py-0.5 text-xs text-center text-amber-300 font-mono"
               />
               <button
                 onClick={() => {
                   setIsEditing(false);
                   audioManager.playSoftClick();
                 }}
-                className="p-1 rounded-lg bg-amber-500/30 text-amber-200 text-xs"
+                className="px-2 py-0.5 rounded-lg bg-amber-500/30 text-amber-200 text-xs font-medium"
               >
                 Tamam
               </button>
@@ -83,26 +83,26 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({ isZenMode }) => {
                 setIsEditing(true);
                 audioManager.playSoftClick();
               }}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-zinc-300 transition-colors"
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-zinc-300 transition-colors"
               title="Kitap ve sayfa bilgisi düzenle"
             >
-              <BookmarkCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span className="font-mono text-amber-300">s. {currentPage}</span>
+              <BookmarkCheck className="w-3 h-3 text-amber-400" />
+              <span className="font-mono text-amber-300 text-xs">s. {currentPage}</span>
             </button>
           )}
         </div>
       </div>
 
       {/* Quote Section */}
-      <div className="relative pt-1">
-        <div className="flex items-start gap-2.5">
-          <Feather className="w-4 h-4 text-amber-400/70 mt-0.5 flex-shrink-0" />
-          <div className="space-y-1">
-            <p className="text-xs md:text-sm text-stone-200 font-serif leading-relaxed italic">
+      <div className="relative pt-0.5">
+        <div className="flex items-start gap-2">
+          <Feather className="w-3.5 h-3.5 text-amber-400/70 mt-0.5 flex-shrink-0" />
+          <div className="space-y-1 w-full">
+            <p className="text-[11px] md:text-xs text-stone-200 font-serif leading-relaxed italic">
               "{quote.text}"
             </p>
-            <div className="flex items-center justify-between pt-1">
-              <span className="text-[11px] text-amber-300/80 font-medium">
+            <div className="flex items-center justify-between pt-0.5">
+              <span className="text-[10px] sm:text-[11px] text-amber-300/80 font-medium">
                 — {quote.author} {quote.book && <span className="text-zinc-500">({quote.book})</span>}
               </span>
               <button
@@ -110,7 +110,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({ isZenMode }) => {
                 className="p-1 rounded-md text-zinc-500 hover:text-amber-300 hover:bg-white/5 transition-colors"
                 title="Yeni alıntı getir"
               >
-                <RefreshCw className="w-3 h-3" />
+                <RefreshCw className="w-2.5 h-2.5" />
               </button>
             </div>
           </div>
