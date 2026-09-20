@@ -11,10 +11,9 @@ Uygulama; dikkati dağıtmayan estetik görseller, yumuşak ışık ve vignette 
 ### Görsel Atmosfer ve Arka Plan
 - İllüstrasyon veya fotoğraf tabanlı tam ekran arka plan desteği.
 - Mobil ve masaüstü ekranlarda görselin ana kompozisyonunu (odak noktasını) koruyan akıllı konumlandırma.
-- Görselin renklerini boğmadan kenarları yumuşatan odaklı vignette ve sıcak akşam lambası filtresi (Warm Glow).
-- Okunabilirlik için ince ayarlanabilen arka plan karartma seviyesi.
+- Kullanıcı tercihine göre yüzdelik (%) derecesi ince ayarlanabilen ve açılıp kapatılabilen odaklı vignette, sıcak akşam lambası filtresi (Warm Glow) ve nostaljik CRT tarama çizgisi (Scanlines) efektleri.
+- Okunabilirlik için hassas ayarlanabilen arka plan karartma seviyesi.
 - Bilgisayardan yerel görsel yükleme veya web üzerinden görsel bağlantısı tanımlayabilme imkanı.
-- İsteğe bağlı nostaljik CRT tarama çizgisi (Scanlines) efekti.
 
 ### Pomodoro Sayacı ve Zamanlayıcı
 - Pomodoro (25 dakika), Kısa Mola (5 dakika), Uzun Mola (15 dakika) ve limitsiz Kronometre modları.

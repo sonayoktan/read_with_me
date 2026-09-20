@@ -35,13 +35,28 @@ export const App: React.FC = () => {
     return saved !== null ? saved === 'true' : true;
   });
 
+  const [warmFilterIntensity, setWarmFilterIntensity] = useState<number>(() => {
+    const saved = localStorage.getItem('rwm_warm_filter_intensity');
+    return saved !== null ? parseFloat(saved) : 0.70;
+  });
+
   const [vignette, setVignette] = useState<boolean>(() => {
     const saved = localStorage.getItem('rwm_vignette');
     return saved !== null ? saved === 'true' : true;
   });
 
+  const [vignetteIntensity, setVignetteIntensity] = useState<number>(() => {
+    const saved = localStorage.getItem('rwm_vignette_intensity');
+    return saved !== null ? parseFloat(saved) : 0.70;
+  });
+
   const [retroScanlines, setRetroScanlines] = useState<boolean>(() => {
     return localStorage.getItem('rwm_retro_scanlines') === 'true';
+  });
+
+  const [retroScanlinesIntensity, setRetroScanlinesIntensity] = useState<number>(() => {
+    const saved = localStorage.getItem('rwm_retro_scanlines_intensity');
+    return saved !== null ? parseFloat(saved) : 0.35;
   });
 
   // Dynamic Z-Index for draggable focus management
@@ -66,6 +81,36 @@ export const App: React.FC = () => {
     window.location.reload();
   };
 
+  const handleToggleWarmFilter = () => {
+    setWarmFilter((prev) => {
+      const next = !prev;
+      if (next && warmFilterIntensity === 0) {
+        setWarmFilterIntensity(0.70);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleVignette = () => {
+    setVignette((prev) => {
+      const next = !prev;
+      if (next && vignetteIntensity === 0) {
+        setVignetteIntensity(0.70);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleRetroScanlines = () => {
+    setRetroScanlines((prev) => {
+      const next = !prev;
+      if (next && retroScanlinesIntensity === 0) {
+        setRetroScanlinesIntensity(0.35);
+      }
+      return next;
+    });
+  };
+
   const [isZenMode, setIsZenMode] = useState<boolean>(false);
   const [isBgPickerOpen, setIsBgPickerOpen] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -84,12 +129,24 @@ export const App: React.FC = () => {
   }, [warmFilter]);
 
   useEffect(() => {
+    localStorage.setItem('rwm_warm_filter_intensity', warmFilterIntensity.toString());
+  }, [warmFilterIntensity]);
+
+  useEffect(() => {
     localStorage.setItem('rwm_vignette', vignette.toString());
   }, [vignette]);
 
   useEffect(() => {
+    localStorage.setItem('rwm_vignette_intensity', vignetteIntensity.toString());
+  }, [vignetteIntensity]);
+
+  useEffect(() => {
     localStorage.setItem('rwm_retro_scanlines', retroScanlines.toString());
   }, [retroScanlines]);
+
+  useEffect(() => {
+    localStorage.setItem('rwm_retro_scanlines_intensity', retroScanlinesIntensity.toString());
+  }, [retroScanlinesIntensity]);
 
   // Keyboard Shortcuts (Z for Zen, F for Fullscreen, B for Background)
   useEffect(() => {
@@ -136,24 +193,25 @@ export const App: React.FC = () => {
 
       {/* 2. Atmospheric Overlays & Dynamic Lighting Shift */}
       {/* 2a. Gentle Vignette: softly dims the edges while keeping the girl and cat in warm focus */}
-      {vignette && (
+      {vignette && vignetteIntensity > 0 && (
         <div
           className="fixed inset-0 pointer-events-none z-[1] transition-opacity duration-700"
           style={{
-            background: 'radial-gradient(ellipse at 52% 50%, rgba(20, 14, 10, 0) 35%, rgba(18, 12, 8, 0.28) 72%, rgba(10, 7, 5, 0.58) 100%)',
+            background: 'radial-gradient(ellipse at 52% 50%, rgba(20, 14, 10, 0) 35%, rgba(18, 12, 8, 0.35) 72%, rgba(10, 7, 5, 0.70) 100%)',
+            opacity: vignetteIntensity,
           }}
         />
       )}
 
       {/* 2b. Dynamic Sunset to Twilight Shift: transitions as 25-minute timer progresses */}
-      {warmFilter && (
+      {warmFilter && warmFilterIntensity > 0 && (
         <>
           {/* Phase 1: Sweet Golden Sunset & Amber glow (fades smoothly as session progresses) */}
           <div
             className="fixed inset-0 pointer-events-none z-[2] mix-blend-soft-light transition-opacity duration-1000"
             style={{
-              background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.16) 0%, rgba(245, 158, 11, 0.11) 45%, rgba(225, 29, 72, 0.08) 100%)',
-              opacity: Math.max(0, 1 - timerProgress * 0.8),
+              background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.22) 0%, rgba(245, 158, 11, 0.16) 45%, rgba(225, 29, 72, 0.12) 100%)',
+              opacity: warmFilterIntensity * Math.max(0, 1 - timerProgress * 0.8),
             }}
           />
 
@@ -161,8 +219,8 @@ export const App: React.FC = () => {
           <div
             className="fixed inset-0 pointer-events-none z-[2] mix-blend-soft-light transition-opacity duration-1000"
             style={{
-              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.10) 0%, rgba(59, 130, 246, 0.12) 50%, rgba(30, 27, 75, 0.25) 100%)',
-              opacity: timerProgress * 0.9,
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.14) 0%, rgba(59, 130, 246, 0.16) 50%, rgba(30, 27, 75, 0.32) 100%)',
+              opacity: warmFilterIntensity * (timerProgress * 0.9),
             }}
           />
         </>
@@ -173,7 +231,7 @@ export const App: React.FC = () => {
         className="fixed inset-0 pointer-events-none z-[3] transition-all duration-1000"
         style={{
           backgroundColor: '#100c08',
-          opacity: Math.min(0.6, overlayOpacity + timerProgress * 0.08),
+          opacity: Math.min(0.85, overlayOpacity + timerProgress * 0.08),
         }}
       />
 
@@ -181,8 +239,14 @@ export const App: React.FC = () => {
       <DustParticles />
 
       {/* 3. Subtle Vignette & Retro CRT scanlines overlay */}
-      {retroScanlines && (
-        <div className="fixed inset-0 pointer-events-none z-10 opacity-35 mix-blend-overlay bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black/90" />
+      {retroScanlines && retroScanlinesIntensity > 0 && (
+        <div
+          className="fixed inset-0 pointer-events-none z-10 mix-blend-overlay transition-opacity duration-500"
+          style={{
+            opacity: retroScanlinesIntensity,
+            backgroundImage: `repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.30) 0px, rgba(0, 0, 0, 0.30) 1px, transparent 1px, transparent 3px), radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.9) 100%)`,
+          }}
+        />
       )}
 
       {/* 4. Top Navigation Bar */}
@@ -266,11 +330,26 @@ export const App: React.FC = () => {
         overlayOpacity={overlayOpacity}
         onOverlayOpacityChange={setOverlayOpacity}
         warmFilter={warmFilter}
-        onToggleWarmFilter={() => setWarmFilter(!warmFilter)}
+        onToggleWarmFilter={handleToggleWarmFilter}
+        warmFilterIntensity={warmFilterIntensity}
+        onWarmFilterIntensityChange={(val) => {
+          setWarmFilterIntensity(val);
+          setWarmFilter(val > 0);
+        }}
         vignette={vignette}
-        onToggleVignette={() => setVignette(!vignette)}
+        onToggleVignette={handleToggleVignette}
+        vignetteIntensity={vignetteIntensity}
+        onVignetteIntensityChange={(val) => {
+          setVignetteIntensity(val);
+          setVignette(val > 0);
+        }}
         retroScanlines={retroScanlines}
-        onToggleRetroScanlines={() => setRetroScanlines(!retroScanlines)}
+        onToggleRetroScanlines={handleToggleRetroScanlines}
+        retroScanlinesIntensity={retroScanlinesIntensity}
+        onRetroScanlinesIntensityChange={(val) => {
+          setRetroScanlinesIntensity(val);
+          setRetroScanlines(val > 0);
+        }}
         isOpen={isBgPickerOpen}
         onClose={() => setIsBgPickerOpen(false)}
       />

@@ -62,10 +62,16 @@ interface BackgroundPickerProps {
   onOverlayOpacityChange: (opacity: number) => void;
   warmFilter: boolean;
   onToggleWarmFilter: () => void;
+  warmFilterIntensity: number;
+  onWarmFilterIntensityChange: (intensity: number) => void;
   vignette: boolean;
   onToggleVignette: () => void;
+  vignetteIntensity: number;
+  onVignetteIntensityChange: (intensity: number) => void;
   retroScanlines: boolean;
   onToggleRetroScanlines: () => void;
+  retroScanlinesIntensity: number;
+  onRetroScanlinesIntensityChange: (intensity: number) => void;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -77,10 +83,16 @@ export const BackgroundPicker: React.FC<BackgroundPickerProps> = ({
   onOverlayOpacityChange,
   warmFilter,
   onToggleWarmFilter,
+  warmFilterIntensity,
+  onWarmFilterIntensityChange,
   vignette,
   onToggleVignette,
+  vignetteIntensity,
+  onVignetteIntensityChange,
   retroScanlines,
   onToggleRetroScanlines,
+  retroScanlinesIntensity,
+  onRetroScanlinesIntensityChange,
   isOpen,
   onClose,
 }) => {
@@ -224,95 +236,173 @@ export const BackgroundPicker: React.FC<BackgroundPickerProps> = ({
             </div>
           </div>
 
-          {/* Display Settings: Dim / Opacity & Scanlines */}
-          <div className="pt-2 border-t border-white/10 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium">
-                <Sliders className="w-3.5 h-3.5 text-amber-400" />
-                <span>Arka Plan Karartma (Okunabilirlik)</span>
-              </div>
-              <span className="text-xs font-mono text-amber-300">%{Math.round(overlayOpacity * 100)}</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="0.85"
-              step="0.05"
-              value={overlayOpacity}
-              onChange={(e) => onOverlayOpacityChange(parseFloat(e.target.value))}
-              className="w-full accent-amber-400 h-1.5 bg-white/10 rounded-lg cursor-pointer"
-            />
-
-            {/* Warm Filter Toggle */}
-            <div className="flex items-center justify-between pt-0.5">
-              <div className="flex items-center gap-2 text-xs text-zinc-300">
-                <Sun className="w-3.5 h-3.5 text-amber-400" />
-                <div>
-                  <span>Sıcak Akşam Filtresi (Warm Glow)</span>
-                  <p className="text-[10px] text-zinc-500">Ilık lo-fi okuma lambası tonu</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={onToggleWarmFilter}
-                className={`w-10 h-5.5 rounded-full transition-colors relative flex items-center px-0.5 ${
-                  warmFilter ? 'bg-amber-500' : 'bg-white/20'
-                }`}
-              >
-                <div
-                  className={`w-4.5 h-4.5 rounded-full bg-white transition-transform ${
-                    warmFilter ? 'translate-x-4.5' : 'translate-x-0'
-                  }`}
-                />
-              </button>
+          {/* Display Settings: Dim / Opacity, Warm Glow, Vignette & Scanlines */}
+          <div className="pt-2 border-t border-white/10 space-y-2.5">
+            <div className="text-[11px] font-medium text-zinc-300 flex items-center gap-1.5">
+              <Sliders className="w-3.5 h-3.5 text-amber-400" />
+              Atmosfer & Efekt Dereceleri
             </div>
 
-            {/* Vignette Toggle */}
-            <div className="flex items-center justify-between pt-0.5">
-              <div className="flex items-center gap-2 text-xs text-zinc-300">
-                <Focus className="w-3.5 h-3.5 text-amber-400" />
-                <div>
-                  <span>Hafif Loşluk / Odak Vignette</span>
-                  <p className="text-[10px] text-zinc-500">Görseli boğmadan kenarları yumuşatır</p>
+            {/* 1. Arka Plan Karartma (Okunabilirlik) */}
+            <div className="space-y-1.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium">
+                  <Sliders className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>Arka Plan Karartma (Okunabilirlik)</span>
                 </div>
+                <span className="text-xs font-mono text-amber-300 font-semibold shrink-0">%{Math.round(overlayOpacity * 100)}</span>
               </div>
-              <button
-                type="button"
-                onClick={onToggleVignette}
-                className={`w-10 h-5.5 rounded-full transition-colors relative flex items-center px-0.5 ${
-                  vignette ? 'bg-amber-500' : 'bg-white/20'
-                }`}
-              >
-                <div
-                  className={`w-4.5 h-4.5 rounded-full bg-white transition-transform ${
-                    vignette ? 'translate-x-4.5' : 'translate-x-0'
-                  }`}
-                />
-              </button>
+              <p className="text-[10px] text-zinc-400">Yazı ve pencerelerin net okunması için karartma seviyesi</p>
+              <input
+                type="range"
+                min="0"
+                max="0.85"
+                step="0.05"
+                value={overlayOpacity}
+                onChange={(e) => onOverlayOpacityChange(parseFloat(e.target.value))}
+                className="w-full accent-amber-400 h-1.5 bg-white/10 rounded-lg cursor-pointer"
+              />
             </div>
 
-            {/* Retro Scanlines Toggle */}
-            <div className="flex items-center justify-between pt-0.5">
-              <div className="flex items-center gap-2 text-xs text-zinc-300">
-                <Tv className="w-3.5 h-3.5 text-amber-400" />
-                <div>
-                  <span>Retro Lo-Fi Scanlines Efekti</span>
-                  <p className="text-[10px] text-zinc-500">Nostaljik CRT monitör dokusu</p>
+            {/* 2. Sıcak Akşam Filtresi (Warm Glow) */}
+            <div className="space-y-1.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium">
+                  <Sun className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <div>
+                    <span>Sıcak Akşam Filtresi (Warm Glow)</span>
+                    <p className="text-[10px] text-zinc-400 font-normal">Ilık lo-fi okuma lambası ve gün batımı tonu</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 ml-2">
+                  <span className="text-xs font-mono text-amber-300 font-semibold min-w-[2.75rem] text-right">
+                    {warmFilter && warmFilterIntensity > 0 ? `%${Math.round(warmFilterIntensity * 100)}` : 'Kapalı'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      audioManager.playSoftClick();
+                      onToggleWarmFilter();
+                    }}
+                    className={`w-9 h-5 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${
+                      warmFilter && warmFilterIntensity > 0 ? 'bg-amber-500' : 'bg-white/20'
+                    }`}
+                    title={warmFilter ? 'Filtreyi Kapat' : 'Filtreyi Aç'}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                        warmFilter && warmFilterIntensity > 0 ? 'translate-x-4' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={onToggleRetroScanlines}
-                className={`w-10 h-5.5 rounded-full transition-colors relative flex items-center px-0.5 ${
-                  retroScanlines ? 'bg-amber-500' : 'bg-white/20'
-                }`}
-              >
-                <div
-                  className={`w-4.5 h-4.5 rounded-full bg-white transition-transform ${
-                    retroScanlines ? 'translate-x-4.5' : 'translate-x-0'
-                  }`}
-                />
-              </button>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={warmFilter ? warmFilterIntensity : 0}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  onWarmFilterIntensityChange(val);
+                }}
+                className="w-full accent-amber-400 h-1.5 bg-white/10 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            {/* 3. Hafif Loşluk / Odak Vignette */}
+            <div className="space-y-1.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium">
+                  <Focus className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <div>
+                    <span>Hafif Loşluk / Odak Vignette</span>
+                    <p className="text-[10px] text-zinc-400 font-normal">Görseli boğmadan kenarları yumuşatır</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 ml-2">
+                  <span className="text-xs font-mono text-amber-300 font-semibold min-w-[2.75rem] text-right">
+                    {vignette && vignetteIntensity > 0 ? `%${Math.round(vignetteIntensity * 100)}` : 'Kapalı'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      audioManager.playSoftClick();
+                      onToggleVignette();
+                    }}
+                    className={`w-9 h-5 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${
+                      vignette && vignetteIntensity > 0 ? 'bg-amber-500' : 'bg-white/20'
+                    }`}
+                    title={vignette ? 'Vignette Efektini Kapat' : 'Vignette Efektini Aç'}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                        vignette && vignetteIntensity > 0 ? 'translate-x-4' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={vignette ? vignetteIntensity : 0}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  onVignetteIntensityChange(val);
+                }}
+                className="w-full accent-amber-400 h-1.5 bg-white/10 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            {/* 4. Retro Lo-Fi Scanlines Efekti */}
+            <div className="space-y-1.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium">
+                  <Tv className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <div>
+                    <span>Retro Lo-Fi Scanlines Efekti</span>
+                    <p className="text-[10px] text-zinc-400 font-normal">Nostaljik CRT monitör ve tarama çizgisi dokusu</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 ml-2">
+                  <span className="text-xs font-mono text-amber-300 font-semibold min-w-[2.75rem] text-right">
+                    {retroScanlines && retroScanlinesIntensity > 0 ? `%${Math.round(retroScanlinesIntensity * 100)}` : 'Kapalı'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      audioManager.playSoftClick();
+                      onToggleRetroScanlines();
+                    }}
+                    className={`w-9 h-5 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${
+                      retroScanlines && retroScanlinesIntensity > 0 ? 'bg-amber-500' : 'bg-white/20'
+                    }`}
+                    title={retroScanlines ? 'Scanlines Efektini Kapat' : 'Scanlines Efektini Aç'}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                        retroScanlines && retroScanlinesIntensity > 0 ? 'translate-x-4' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={retroScanlines ? retroScanlinesIntensity : 0}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  onRetroScanlinesIntensityChange(val);
+                }}
+                className="w-full accent-amber-400 h-1.5 bg-white/10 rounded-lg cursor-pointer"
+              />
             </div>
           </div>
         </div>
